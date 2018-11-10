@@ -21,8 +21,14 @@ export default class Login extends Component {
             [event.target.id]: event.target.value
         });
     }
-    handleSubmit = event => {
+    handleSubmit = async event => {
         event.preventDefault();
+        try {
+            await Auth.signIn(this.state.email, this.state.password);
+            alert("Logged in");
+        } catch (e) {
+            alert(e.message);
+        }
     }
     render() {
         return (
