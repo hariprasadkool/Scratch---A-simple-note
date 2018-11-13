@@ -31,7 +31,7 @@
 
 
 import React, { Component, Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link , withRouter} from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import "./App.css";
@@ -64,9 +64,11 @@ class App extends Component {
     this.setState({ isAuthenticated: authenticated });
   }
 
-  handleLogout = event => {
+  handleLogout = async event => {
+    await Auth.signOut();
     this.userHasAuthenticated(false);
-  }
+    this.props.history.push("/login");
+   }
 
   render() {
     const childProps = {
@@ -104,4 +106,5 @@ class App extends Component {
     );
   }
 }
-export default App;
+// export default App;
+export default withRouter(App);
