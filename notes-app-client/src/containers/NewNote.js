@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { FormGroup, FormControl, ControlLabel } from "reactbootstrap";
+import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import config from "../config";
 import "./NewNote.css";
+import { API } from "aws-amplify";
+
 export default class NewNote extends Component {
     constructor(props) {
         super(props);
@@ -31,6 +33,20 @@ export default class NewNote extends Component {
             return;
         }
         this.setState({ isLoading: true });
+        try {
+            await this.createNote({
+                content: this.state.content
+            });
+            this.props.history.push("/");
+        } catch (e) {
+            alert(e);
+            this.setState({ isLoading: false });
+        }
+    }
+    createNote(note) {
+        return API.post("notes", "/notes", {
+            body: note
+        });
     }
     render() {
         return (
